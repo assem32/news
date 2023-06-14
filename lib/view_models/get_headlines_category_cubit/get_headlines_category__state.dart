@@ -4,12 +4,22 @@ abstract class GetHeadLinesCategoryState{}
 
 class GetHeadLinesCategoryInitial extends GetHeadLinesCategoryState{}
 
-class GetHeadLinesCategoryLoading extends GetHeadLinesCategoryState{}
-class GetHeadLinesCategorySuccess extends GetHeadLinesCategoryState{
+class GetHeadLinesBusinessLoading extends GetHeadLinesCategoryState{}
+class GetHeadLinesBusinessSuccess extends GetHeadLinesCategoryState{
   final List<Articles> articles;
-  GetHeadLinesCategorySuccess(this.articles);
+  GetHeadLinesBusinessSuccess(this.articles);
 }
-class GetHeadLinesCategoryFailure extends GetHeadLinesCategoryState{
+class GetHeadLinesBusinessFailure extends GetHeadLinesCategoryState{
   final String errMessage;
-  GetHeadLinesCategoryFailure(this.errMessage);
+  GetHeadLinesBusinessFailure(this.errMessage);
+}
+
+class GetHeadLinesTechnologyLoading extends GetHeadLinesCategoryState{}
+class GetHeadLinesTechnologySuccess extends GetHeadLinesCategoryState{
+  final List<Articles> articles;
+  GetHeadLinesTechnologySuccess(this.articles);
+}
+class GetHeadLinesTechnologyFailure extends GetHeadLinesCategoryState{
+  final String errMessage;
+  GetHeadLinesTechnologyFailure(this.errMessage);
 }

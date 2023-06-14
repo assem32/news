@@ -9,21 +9,21 @@ class GetHeadLinesCategoryCubit extends Cubit<GetHeadLinesCategoryState> {
   final HomeRepo homeRepo;
 
   Future<void> fetchGetHeadLinesBusiness() async {
-    emit(GetHeadLinesCategoryLoading());
+    emit(GetHeadLinesBusinessLoading());
     var result = await homeRepo.fetchHeadLinesCategory(category: 'business');
     result.fold((failure) {
-      emit(GetHeadLinesCategoryFailure(failure.errMessage));
+      emit(GetHeadLinesBusinessFailure(failure.errMessage));
     }, (articles) {
-      emit(GetHeadLinesCategorySuccess(articles));
+      emit(GetHeadLinesBusinessSuccess(articles));
     });
   }
   Future<void> fetchGetHeadLinesTechnology() async {
-    emit(GetHeadLinesCategoryLoading());
+    emit(GetHeadLinesTechnologyLoading());
     var result = await homeRepo.fetchHeadLinesCategory(category: 'technology');
     result.fold((failure) {
-      emit(GetHeadLinesCategoryFailure(failure.errMessage));
+      emit(GetHeadLinesTechnologyFailure(failure.errMessage));
     }, (articles) {
-      emit(GetHeadLinesCategorySuccess(articles));
+      emit(GetHeadLinesTechnologySuccess(articles));
     });
   }
 }

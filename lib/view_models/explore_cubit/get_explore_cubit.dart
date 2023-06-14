@@ -9,74 +9,74 @@ class GetExploreCubit extends Cubit<GetExploreState> {
   final HomeRepo homeRepo;
 
   Future<void> fetchBBC() async {
-    emit(GetExploreLoading());
+    emit(GetExploreBBCLoading());
     var result = await homeRepo.fetchSources();
     result.fold((failure) {
-      emit(GetExploreFailure(failure.errMessage));
+      emit(GetExploreBBCFailure(failure.errMessage));
     }, (sources) {
       List<Sources> bbcList =
           sources.where((source) => source.id == 'bbc-news').toList();
-      emit(GetExploreSuccess(bbcList));
+      emit(GetExploreBBCSuccess(bbcList));
     });
   }
 
   Future<void> fetchAlJazzera() async {
-    emit(GetExploreLoading());
+    emit(GetExploreAlJazzeraLoading());
     var result = await homeRepo.fetchSources();
     result.fold((failure) {
-      emit(GetExploreFailure(failure.errMessage));
+      emit(GetExploreAlJazzeraFailure(failure.errMessage));
     }, (sources) {
       List<Sources> alJazzeraList =
           sources.where((source) => source.id == 'al-jazeera-english').toList();
-      emit(GetExploreSuccess(alJazzeraList));
+      emit(GetExploreAlJazzeraSuccess(alJazzeraList));
     });
   }
 
   Future<void> fetchSabq() async {
-    emit(GetExploreLoading());
+    emit(GetExploreSabqLoading());
     var result = await homeRepo.fetchSources();
     result.fold((failure) {
-      emit(GetExploreFailure(failure.errMessage));
+      emit(GetExploreSabqFailure(failure.errMessage));
     }, (sources) {
       List<Sources> sabqList =
           sources.where((source) => source.id == 'sabq').toList();
-      emit(GetExploreSuccess(sabqList));
+      emit(GetExploreSabqSuccess(sabqList));
     });
   }
 
   Future<void> fetchABC() async {
-    emit(GetExploreLoading());
+    emit(GetExploreABCLoading());
     var result = await homeRepo.fetchSources();
     result.fold((failure) {
-      emit(GetExploreFailure(failure.errMessage));
+      emit(GetExploreABCFailure(failure.errMessage));
     }, (sources) {
       List<Sources> abcList =
           sources.where((source) => source.id == 'abc-news').toList();
-      emit(GetExploreSuccess(abcList));
+      emit(GetExploreABCSuccess(abcList));
     });
   }
 
   Future<void> fetchArgaam() async {
-    emit(GetExploreLoading());
+    emit(GetExploreArgaamLoading());
     var result = await homeRepo.fetchSources();
     result.fold((failure) {
-      emit(GetExploreFailure(failure.errMessage));
+      emit(GetExploreArgaamFailure(failure.errMessage));
     }, (sources) {
       List<Sources> argaamList =
           sources.where((source) => source.id == 'argaam').toList();
-      emit(GetExploreSuccess(argaamList));
+      emit(GetExploreArgaamSuccess(argaamList));
     });
   }
 
   Future<void> fetchBloomberg() async {
-    emit(GetExploreLoading());
+    emit(GetExploreBloombergLoading());
     var result = await homeRepo.fetchSources();
     result.fold((failure) {
-      emit(GetExploreFailure(failure.errMessage));
+      emit(GetExploreBloombergFailure(failure.errMessage));
     }, (sources) {
       List<Sources> bloombergList =
           sources.where((source) => source.id == 'bloomberg').toList();
-      emit(GetExploreSuccess(bloombergList));
+      emit(GetExploreBloombergSuccess(bloombergList));
     });
   }
 }
