@@ -7,5 +7,5 @@ abstract class HomeRepo{
   Future<Either<Failure,List<Articles>>>fetchArticles();
   Future<Either<Failure,List<Articles>>>fetchHeadLines();
   Future<Either<Failure,List<Sources>>>fetchSources();
-
+  Future<Either<Failure,List<Articles>>>fetchHeadLinesCategory({required String category});
 }

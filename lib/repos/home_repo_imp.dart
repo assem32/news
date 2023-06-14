@@ -8,20 +8,22 @@ import '../models/article_model.dart';
 import '../models/sources_model.dart';
 import 'home_repo.dart';
 
-class HomeRepoImp implements HomeRepo{
+class HomeRepoImp implements HomeRepo {
   final ApiService _apiService;
+
   HomeRepoImp(this._apiService);
+
   @override
-  Future<Either<Failure, List<Articles>>> fetchArticles() async{
-    try{
-      var data = await _apiService.get(endPoint: everything,query: {
-        'q':'bitcoin',
+  Future<Either<Failure, List<Articles>>> fetchArticles() async {
+    try {
+      var data = await _apiService.get(endPoint: everything, query: {
+        'q': 'bitcoin',
         'apiKey': apiKey,
       });
-      ArticleModel articleModel=ArticleModel.fromJson(data);
+      ArticleModel articleModel = ArticleModel.fromJson(data);
       return right(articleModel.articles!);
-    }catch(e){
-      if(e is DioError){
+    } catch (e) {
+      if (e is DioError) {
         return left(ServerFailure.fromDioError(e));
       }
       return left(ServerFailure(e.toString()));
@@ -29,16 +31,16 @@ class HomeRepoImp implements HomeRepo{
   }
 
   @override
-  Future<Either<Failure, List<Articles>>> fetchHeadLines() async{
-    try{
-      var data = await _apiService.get(endPoint: headlines,query: {
-        'country':'sa',
+  Future<Either<Failure, List<Articles>>> fetchHeadLines() async {
+    try {
+      var data = await _apiService.get(endPoint: headlines, query: {
+        'country': 'sa',
         'apiKey': apiKey,
       });
-      ArticleModel headLines=ArticleModel.fromJson(data);
+      ArticleModel headLines = ArticleModel.fromJson(data);
       return right(headLines.articles!);
-    }catch(e){
-      if(e is DioError){
+    } catch (e) {
+      if (e is DioError) {
         return left(ServerFailure.fromDioError(e));
       }
       return left(ServerFailure(e.toString()));
@@ -47,18 +49,36 @@ class HomeRepoImp implements HomeRepo{
 
   @override
   Future<Either<Failure, List<Sources>>> fetchSources() async {
-    try{
-      var data = await _apiService.get(endPoint: sources,query: {
+    try {
+      var data = await _apiService.get(endPoint: sources, query: {
         'apiKey': apiKey,
       });
-      SourcesModel sourcesModel=SourcesModel.fromJson(data);
+      SourcesModel sourcesModel = SourcesModel.fromJson(data);
       return right(sourcesModel.sources!);
-    }catch(e){
-      if(e is DioError){
+    } catch (e) {
+      if (e is DioError) {
         return left(ServerFailure.fromDioError(e));
       }
       return left(ServerFailure(e.toString()));
     }
   }
 
+  @override
+  Future<Either<Failure, List<Articles>>> fetchHeadLinesCategory(
+      {required String category}) async {
+    try {
+      var data = await _apiService.get(endPoint: headlines, query: {
+        'category': category,
+        'country': 'sa',
+        'apiKey': apiKey,
+      });
+      ArticleModel headLines = ArticleModel.fromJson(data);
+      return right(headLines.articles!);
+    } catch (e) {
+      if (e is DioError) {
+        return left(ServerFailure.fromDioError(e));
+      }
+      return left(ServerFailure(e.toString()));
+    }
+  }
 }
