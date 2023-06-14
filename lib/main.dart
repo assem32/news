@@ -7,13 +7,14 @@ import 'package:news/presintation/main_layout/cubit/state.dart';
 import 'package:news/presintation/main_layout/main_layout_veiw/main_layout.dart';
 import 'package:news/presintation/resources/routing_manger.dart';
 import 'package:news/presintation/resources/theme_manger.dart';
+import 'package:news/service_locator.dart';
 
 void main()async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  setupServiceLocator();
   await CashHelper.init();
-  bool? isDark=CashHelper.getData(key: 'isDark');
-  runApp( MyApp(isDark!,));
+  bool isDark=CashHelper.getData(key: 'isDark')??false;
+  runApp( MyApp(isDark,));
 }
 
 class MyApp extends StatelessWidget {
