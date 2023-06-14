@@ -11,7 +11,6 @@ import 'home_repo.dart';
 class HomeRepoImp implements HomeRepo{
   final ApiService _apiService;
   HomeRepoImp(this._apiService);
-
   @override
   Future<Either<Failure, List<Articles>>> fetchArticles() async{
     try{
