@@ -23,6 +23,7 @@ class TechnologyScreen extends StatelessWidget {
                         image: state.articles[index].urlToImage,
                         author: state.articles[index].author,
                         time: state.articles[index].publishedAt,
+                        url:  state.articles[index].url,
                         context: context)
                     , separatorBuilder: (context,index)=>const SizedBox(width: 12,), itemCount: state.articles.length),
               );
