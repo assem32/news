@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:news/presintation/main_layout/cubit/cubit.dart';
+import 'package:news/presintation/main_layout/cubit/state.dart';
 import 'package:news/presintation/resources/color_manger.dart';
 import 'package:news/presintation/resources/component.dart';
 import '../../view_models/business_cubit/get_business_cubit.dart';
@@ -10,28 +12,39 @@ class Business extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        BlocBuilder<GetBusinessCubit,GetBusinessState>(
-          builder: (context, state) {
-            if (state is GetBusinessSuccess )
-            return Expanded(
-              child: ListView.separated(
-                  scrollDirection: Axis.vertical,
-                  itemBuilder: (context,index)=>articleItem(title: state.articles[index].title!,
-                      image: state.articles[index].urlToImage,
-                      author: state.articles[index].author,
-                      time: state.articles[index].publishedAt,
-                      context: context)
-                  , separatorBuilder: (context,index)=>const SizedBox(width: 12,), itemCount: state.articles.length),
-            );
-            else if(state is GetBusinessFailure)
-              return Text(state.errMessage);
-            else
-              return CircularProgressIndicator(color: ColorManger.headLine,);
-          },
-        )
-      ],
+    return BlocConsumer<MainLayoutCubit,AppState>(
+      listener: (context, state) {
+
+      },
+      builder: (context, state) {
+        return Column(
+          children: [
+            BlocBuilder<GetBusinessCubit,GetBusinessState>(
+              builder: (context, state) {
+                if (state is GetBusinessSuccess )
+                  return Expanded(
+                    child: ListView.separated(
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (context,index)=>articleItem(title: state.articles[index].title!,
+                            image: state.articles[index].urlToImage,
+                            author: state.articles[index].author,
+                            time: state.articles[index].publishedAt,
+                            function: (){
+                          MainLayoutCubit.get(context).insertToDataBase(title:state.articles[index].title,author: state.articles[index].author,image: state.articles[index].urlToImage,time: state.articles[index].publishedAt,url: state.articles[index].url);
+                            },
+                            url: state.articles[index].url,
+                            context: context)
+                        , separatorBuilder: (context,index)=>const SizedBox(width: 12,), itemCount: state.articles.length),
+                  );
+                else if(state is GetBusinessFailure)
+                  return Text(state.errMessage);
+                else
+                  return CircularProgressIndicator(color: ColorManger.headLine,);
+              },
+            )
+          ],
+        );
+      },
     );
   }
 }
