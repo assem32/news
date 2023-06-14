@@ -10,7 +10,9 @@ import 'package:news/presintation/resources/theme_manger.dart';
 import 'package:news/repos/home_repo_imp.dart';
 import 'package:news/service_locator.dart';
 import 'package:news/view_models/get_articles_cubit/get_articles_cubit.dart';
+import 'package:news/view_models/get_headlines_category_cubit/get_headlines_category_cubit.dart';
 import 'package:news/view_models/get_headlines_cubit/get_headlines_cubit.dart';
+import 'package:news/view_models/search_cubit/search_cubit.dart';
 
 void main()async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,6 +33,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (BuildContext context)=>MainLayoutCubit()..changeAppMode(fromShared: isDark)),
         BlocProvider(create: (BuildContext context)=>GetHeadLinesCubit(getIt.get<HomeRepoImp>() )..fetchGetHeadLines()),
         BlocProvider(create: (BuildContext context)=>GetArticlesCubit(getIt.get<HomeRepoImp>() )..fetchGetArticles()),
+        BlocProvider(create: (BuildContext context)=>GetHeadLinesCategoryCubit(getIt.get<HomeRepoImp>() )..fetchGetHeadLinesBusiness()),
+        BlocProvider(create: (BuildContext context)=>GetHeadLinesCategoryCubit(getIt.get<HomeRepoImp>() )..fetchGetHeadLinesTechnology()),
+        // BlocProvider(create: (BuildContext context)=>SearchCubit(getIt.get<HomeRepoImp>() )),
       ],
       child: BlocConsumer<MainLayoutCubit, AppState>(
     listener: (context, state) {},

@@ -13,12 +13,23 @@ class Profile extends StatelessWidget {
       listener: (context,state){},
       builder: (context,state){
         return Scaffold(
-          body: Column(
-            children: [
-              MaterialButton(onPressed: (){
-                MainLayoutCubit.get(context).changeAppMode();
-              },child: Text('Dark mode'),)
-            ],
+          body: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  children: [
+                    Text('Choose theme mode',style: Theme.of(context).textTheme.displaySmall,),
+                    MaterialButton(
+                      color: MainLayoutCubit.get(context).isDark?Colors.white:Colors.black,
+                      onPressed: (){
+                      MainLayoutCubit.get(context).changeAppMode();
+                    },child: MainLayoutCubit.get(context).isDark?Text('Light mode'):Text('Dark mode',style: TextStyle(color: Colors.white),),),
+                  ],
+                )
+              ],
+            ),
           ),
         );
       },

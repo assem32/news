@@ -71,7 +71,7 @@ class AllScreen extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    state.headlines[index].author??'someone',
+                                    state.headlines[index].author==null?'':state.headlines[index].author!,
                                     style:
                                         Theme.of(context).textTheme.bodyLarge,
                                   )

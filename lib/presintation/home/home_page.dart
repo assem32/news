@@ -6,6 +6,7 @@ import 'package:news/presintation/main_layout/cubit/cubit.dart';
 import 'package:news/presintation/main_layout/cubit/state.dart';
 import 'package:news/presintation/resources/color_manger.dart';
 import 'package:news/presintation/resources/string_Manger.dart';
+import 'package:news/view_models/search_cubit/search_cubit.dart';
 
 List titles = [
   'All',
@@ -49,6 +50,9 @@ class HomePage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(50),
                       ),
                       child: TextFormField(
+                        onChanged: (v){
+
+                        },
                         decoration: InputDecoration(
                             prefixIcon: Icon(
                               Icons.search,
