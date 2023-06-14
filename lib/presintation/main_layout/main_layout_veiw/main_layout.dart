@@ -38,7 +38,7 @@ class MainLayout extends StatelessWidget {
                     label: 'List'
                 ),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.person_outline_outlined),
+                    icon: Icon(Icons.person_2_outlined),
                     label: 'List'
                 ),
               ],

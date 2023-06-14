@@ -7,7 +7,9 @@ import 'package:news/presintation/main_layout/cubit/state.dart';
 import 'package:news/presintation/main_layout/main_layout_veiw/main_layout.dart';
 import 'package:news/presintation/resources/routing_manger.dart';
 import 'package:news/presintation/resources/theme_manger.dart';
+import 'package:news/repos/home_repo_imp.dart';
 import 'package:news/service_locator.dart';
+import 'package:news/view_models/get_headlines_cubit/get_headlines_cubit.dart';
 
 void main()async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,6 +28,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (BuildContext context)=>MainLayoutCubit()..changeAppMode(fromShared: isDark)),
+        BlocProvider(create: (BuildContext context)=>GetHeadLinesCubit(getIt.get<HomeRepoImp>() )..fetchGetHeadLines()),
       ],
       child: BlocConsumer<MainLayoutCubit, AppState>(
     listener: (context, state) {},
