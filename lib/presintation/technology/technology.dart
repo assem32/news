@@ -6,6 +6,7 @@ import 'package:news/presintation/resources/component.dart';
 import 'package:news/view_models/get_technology_cubit/get_technology__state.dart';
 import 'package:news/view_models/get_technology_cubit/get_technology_cubit.dart';
 
+
 class TechnologyScreen extends StatelessWidget {
   const TechnologyScreen({Key? key}) : super(key: key);
 

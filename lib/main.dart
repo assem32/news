@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (BuildContext context)=>MainLayoutCubit()..changeAppMode(fromShared: isDark)),
+        BlocProvider(create: (BuildContext context)=>MainLayoutCubit()..changeAppMode(fromShared: isDark)..createDataBase()),
         BlocProvider(create: (BuildContext context)=>GetHeadLinesCubit(getIt.get<HomeRepoImp>() )..fetchGetHeadLines()),
         BlocProvider(create: (BuildContext context)=>GetArticlesCubit(getIt.get<HomeRepoImp>() )..fetchGetArticles()),
         BlocProvider(create: (BuildContext context)=>GetTechnologyCubit(getIt.get<HomeRepoImp>())..fetchTechnology()),

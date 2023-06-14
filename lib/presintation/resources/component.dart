@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-Widget articleItem({context,title,image,time,author,url})=>Padding(
+Widget articleItem({context,title,image,time,author,url,function})=>Padding(
   padding: const EdgeInsets.all(10.0),
   child: InkWell(
     onTap: ()async{
@@ -24,7 +24,9 @@ Widget articleItem({context,title,image,time,author,url})=>Padding(
               Row(
                 children: [
                   Text(DateFormat('dd/MM/yyyy').format(DateTime.parse(time)),style: Theme.of(context).textTheme.bodyLarge,),
-                  IconButton(onPressed: (){}, icon: Icon(Icons.more_horiz))
+                  IconButton(onPressed: (){
+                    function();
+                  }, icon: Icon(Icons.bookmark_rounded))
                 ],
               ),
 

@@ -40,6 +40,7 @@ dependencies:
   intl: ^0.17.0
   shared_preferences: ^2.1.2
   url_launcher: ^6.1.11
+  sqflite: ^2.2.8+4
   dio:
   get_it:
   dartz:
