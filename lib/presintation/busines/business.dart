@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news/presintation/resources/color_manger.dart';
 import 'package:news/presintation/resources/component.dart';
-import 'package:news/view_models/get_headlines_category_cubit/get_headlines_category__state.dart';
-import 'package:news/view_models/get_headlines_category_cubit/get_headlines_category_cubit.dart';
+import '../../view_models/business_cubit/get_business_cubit.dart';
+import '../../view_models/business_cubit/get_business_state.dart';
 
 class Business extends StatelessWidget {
   const Business({Key? key}) : super(key: key);
@@ -12,9 +12,9 @@ class Business extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        BlocBuilder<GetHeadLinesCategoryCubit,GetHeadLinesCategoryState>(
+        BlocBuilder<GetBusinessCubit,GetBusinessState>(
           builder: (context, state) {
-            if (state is GetHeadLinesBusinessSuccess )
+            if (state is GetBusinessSuccess )
             return Expanded(
               child: ListView.separated(
                   scrollDirection: Axis.vertical,
@@ -25,7 +25,7 @@ class Business extends StatelessWidget {
                       context: context)
                   , separatorBuilder: (context,index)=>const SizedBox(width: 12,), itemCount: state.articles.length),
             );
-            else if(state is GetHeadLinesBusinessFailure)
+            else if(state is GetBusinessFailure)
               return Text(state.errMessage);
             else
               return CircularProgressIndicator(color: ColorManger.headLine,);
