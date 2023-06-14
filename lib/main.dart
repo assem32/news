@@ -9,6 +9,7 @@ import 'package:news/presintation/resources/routing_manger.dart';
 import 'package:news/presintation/resources/theme_manger.dart';
 import 'package:news/repos/home_repo_imp.dart';
 import 'package:news/service_locator.dart';
+import 'package:news/view_models/get_articles_cubit/get_articles_cubit.dart';
 import 'package:news/view_models/get_headlines_cubit/get_headlines_cubit.dart';
 
 void main()async {
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (BuildContext context)=>MainLayoutCubit()..changeAppMode(fromShared: isDark)),
         BlocProvider(create: (BuildContext context)=>GetHeadLinesCubit(getIt.get<HomeRepoImp>() )..fetchGetHeadLines()),
+        BlocProvider(create: (BuildContext context)=>GetArticlesCubit(getIt.get<HomeRepoImp>() )..fetchGetArticles()),
       ],
       child: BlocConsumer<MainLayoutCubit, AppState>(
     listener: (context, state) {},

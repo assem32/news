@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:news/presintation/resources/color_manger.dart';
+import 'package:news/view_models/get_articles_cubit/get_articles_cubit.dart';
+import 'package:news/view_models/get_articles_cubit/get_articles_state.dart';
 import 'package:news/view_models/get_headlines_cubit/get_headlines_cubit.dart';
 import 'package:news/view_models/get_headlines_cubit/get_headlines_state.dart';
 
@@ -47,21 +50,28 @@ class AllScreen extends StatelessWidget {
                                                 0.203393085787452,
                                         fit: BoxFit.fill,
                                         image: NetworkImage(
-                                          'https://img.freepik.com/free-photo/nature-colorful-landscape-dusk-cloud_1203-5705.jpg?w=1060&t=st=1686670375~exp=1686670975~hmac=e7c38f30b1fc6634512d807e74897e0415050909bab602f9a465d838cbad7edf',
+                                          state.headlines[index].urlToImage==null?'https://cdn-icons-png.flaticon.com/512/102/102407.png?w=740&t=st=1686748029~exp=1686748629~hmac=1db47efe74968a0c38baa278d2b471b7b54ae649babed8a4597723e08b273c08':state.headlines[index].urlToImage!,
                                         ),
                                       )),
                                   SizedBox(
                                     height: MediaQuery.of(context).size.height *
                                         0.0128040973111396,
                                   ),
-                                  Text(
-                                    state.headlines[index].title!,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displaySmall,
+                                  Container(
+                                    width:
+                                    MediaQuery.of(context).size.width *
+                                        0.7244897959183673,
+                                    child: Text(
+                                      state.headlines[index].title!,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displaySmall,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   ),
                                   Text(
-                                    'Category',
+                                    state.headlines[index].author!,
                                     style:
                                         Theme.of(context).textTheme.bodyLarge,
                                   )
@@ -88,51 +98,81 @@ class AllScreen extends StatelessWidget {
           padding:  EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height*0.0108040973111396),
           child: Text('Latest',style: Theme.of(context).textTheme.displayMedium,),
         ),
-        Expanded(
-          flex: 6,
+        BlocBuilder<GetArticlesCubit,GetArticlesState>(
+          builder: (context,state){
+            if(state is GetArticlesSuccess)
+              return  Expanded(
+                flex: 6,
 
-          child: ListView.separated(
-              scrollDirection: Axis.vertical,
-              itemBuilder: (context,index)=>Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: InkWell(
-                  child: Row(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Category',style: Theme.of(context).textTheme.bodyLarge,),
-                          Text('News title here',style: Theme.of(context).textTheme.displayMedium,),
-                          Row(
-                            children: [
-                              Text('time',style: Theme.of(context).textTheme.bodyLarge,),
-                              IconButton(onPressed: (){}, icon: Icon(Icons.more_horiz))
-                            ],
-                          ),
+                child: ListView.separated(
+                    scrollDirection: Axis.vertical,
+                    itemBuilder: (context,index)=>Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: InkWell(
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(state.articles[index].author==null ?'':state.articles[index].author!,style: Theme.of(context).textTheme.bodyLarge,),
+                                  Text(state.articles[index].title!,style: Theme.of(context).textTheme.displayMedium,maxLines: 2,overflow: TextOverflow.ellipsis),
+                                  Row(
+                                    children: [
+                                      Text(DateFormat('dd/MM/yyyy').format(DateTime.parse(state.articles[index].publishedAt!)),style: Theme.of(context).textTheme.bodyLarge,),
+                                      IconButton(onPressed: (){}, icon: Icon(Icons.more_horiz))
+                                    ],
+                                  ),
 
-                        ],
+                                ],
+                              ),
+                            ),
+                            Spacer(),
+                            Container(
+
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(16),
+
+                                ),
+                                child: Image(
+                                  width: MediaQuery.of(context).size.width*0.2040816326530612,
+                                  height: MediaQuery.of(context).size.height*0.1024327784891165,
+                                  image: NetworkImage(state.articles[index].urlToImage==null?"https://cdn-icons-png.flaticon.com/512/102/102407.png?w=740&t=st=1686748029~exp=1686748629~hmac=1db47efe74968a0c38baa278d2b471b7b54ae649babed8a4597723e08b273c08":state.articles[index].urlToImage!),fit: BoxFit.fill,)),
+
+
+                          ],
+                        ),
                       ),
-                      Spacer(),
-                      Container(
-
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-
-                          ),
-                          child: Image(
-                            width: MediaQuery.of(context).size.width*0.2040816326530612,
-                            height: MediaQuery.of(context).size.height*0.1024327784891165,
-                            image: NetworkImage('https://img.freepik.com/free-photo/nature-colorful-landscape-dusk-cloud_1203-5705.jpg?w=1060&t=st=1686670375~exp=1686670975~hmac=e7c38f30b1fc6634512d807e74897e0415050909bab602f9a465d838cbad7edf'),fit: BoxFit.fill,)),
-
-
-                    ],
-                  ),
-                ),
-              )
-              , separatorBuilder: (context,index)=>const SizedBox(width: 12,), itemCount: 5),
+                    )
+                    , separatorBuilder: (context,index)=>const SizedBox(width: 12,), itemCount: state.articles.length),
+              );
+            else if (state is GetArticlesFailure)
+              return Text(state.errMessage);
+            else
+              return CircularProgressIndicator(color:  ColorManger.headLine,);
+          },
         ),
       ],
     );
   }
+}
+String addDaySuffix(String date) {
+  final day = date.split(' ')[1];
+  final dayInt = int.tryParse(day);
+
+  if (dayInt != null) {
+    if (dayInt >= 11 && dayInt <= 13) {
+      return date + 'th';
+    }
+
+    switch (dayInt % 10) {
+      case 1: return date + 'st';
+      case 2: return date + 'nd';
+      case 3: return date + 'rd';
+      default: return date + 'th';
+    }
+  }
+
+  return date;
 }
