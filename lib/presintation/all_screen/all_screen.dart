@@ -22,8 +22,9 @@ class AllScreen extends StatelessWidget {
         BlocBuilder<GetHeadLinesCubit,GetHeadLinesState>(
           builder: (context, state) {
             if(state is GetHeadLinesSuccess) {
-              return Expanded(
-                flex: 6,
+              return Container(
+                height: MediaQuery.of(context).size.height*0.29449423815621,
+                width: double.infinity,
                 child: ListView.separated(
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) => Card(
@@ -117,23 +118,21 @@ class AllScreen extends StatelessWidget {
         BlocBuilder<GetArticlesCubit,GetArticlesState>(
           builder: (context,state){
             if(state is GetArticlesSuccess) {
-              return  Expanded(
-                flex: 6,
-
-                child: ListView.separated(
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: (context,index)=>articleItem(
-                        title: state.articles[index].title,
-                        image: state.articles[index].urlToImage,
-                        time: state.articles[index].publishedAt,
-                        showIcon: true,
-                        swipe: false,
-                        author: state.articles[index].author,
-                        url: state.articles[index].url,
-                        context: context
-                    )
-                    , separatorBuilder: (context,index)=>const SizedBox(width: 12,), itemCount: state.articles.length),
-              );
+              return  ListView.separated(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context,index)=>articleItem(
+                      title: state.articles[index].title,
+                      image: state.articles[index].urlToImage,
+                      time: state.articles[index].publishedAt,
+                      showIcon: true,
+                      swipe: false,
+                      author: state.articles[index].author,
+                      url: state.articles[index].url,
+                      context: context
+                  )
+                  , separatorBuilder: (context,index)=>const SizedBox(width: 12,), itemCount: state.articles.length);
             } else if (state is GetArticlesFailure) {
               return errorWidget(text: state.errMessage,context: context);
             } else {

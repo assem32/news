@@ -28,54 +28,57 @@ class HomePage extends StatelessWidget {
             padding: const EdgeInsets.all(12.0),
             child: Scaffold(
               backgroundColor: Colors.grey.withOpacity(0.07),
-              body: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    StringManger.headLine,
-                    style: Theme.of(context).textTheme.displayLarge,
-                  ),
-                  Text(
-                    '${StringManger.today},$formattedDate$ordinalDay',
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                        vertical: MediaQuery.of(context).size.height *
-                            0.0100140845070423,
-                        horizontal: MediaQuery.of(context).size.width *
-                            0.0412244897959184),
-                    child: Container(
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      child: InkWell(
-                        onTap:(){
-                          Navigator.pushNamed(context, Routes.searchRoute);
-                        },
-                        child: TextFormField(
-
-                          onChanged: (v){
-
+              body: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      StringManger.headLine,
+                      style: Theme.of(context).textTheme.displayLarge,
+                    ),
+                    Text(
+                      '${StringManger.today},$formattedDate$ordinalDay',
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: MediaQuery.of(context).size.height *
+                              0.0100140845070423,
+                          horizontal: MediaQuery.of(context).size.width *
+                              0.0412244897959184),
+                      child: Container(
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        child: InkWell(
+                          onTap:(){
+                            Navigator.pushNamed(context, Routes.searchRoute);
                           },
+                          child: TextFormField(
 
-                          decoration: InputDecoration(
-                            enabled: false,
-                              prefixIcon: Icon(
-                                Icons.search,
-                                color: ColorManger.secColor,
-                              ),
-                              label: Text('Search'),
-                              labelStyle: TextStyle(color: ColorManger.secColor),
-                              filled: true,
-                              fillColor: ColorManger.lightGrey.withOpacity(0.2),
-                              border: InputBorder.none),
+                            onChanged: (v){
+
+                            },
+
+                            decoration: InputDecoration(
+                              enabled: false,
+                                prefixIcon: Icon(
+                                  Icons.search,
+                                  color: ColorManger.secColor,
+                                ),
+                                label: Text('Search'),
+                                labelStyle: TextStyle(color: ColorManger.secColor),
+                                filled: true,
+                                fillColor: ColorManger.lightGrey.withOpacity(0.2),
+                                border: InputBorder.none),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Expanded(
+                    Container(
+                      height: MediaQuery.of(context).size.height*0.0512163892445583,
+                      width: double.infinity,
                       child: ListView.separated(
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) => InkWell(
@@ -103,9 +106,11 @@ class HomePage extends StatelessWidget {
                           separatorBuilder: (context, index) => SizedBox(
                             width: 10,
                           ),
-                          itemCount: titles.length)),
-                  Expanded(flex: 14, child: MainLayoutCubit.get(context).subScreens[MainLayoutCubit.get(context).subPage])
-                ],
+                          itemCount: titles.length),
+                    ),
+                    MainLayoutCubit.get(context).subScreens[MainLayoutCubit.get(context).subPage]
+                  ],
+                ),
               ),
             ),
           ),

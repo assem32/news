@@ -22,24 +22,24 @@ class Business extends StatelessWidget {
             BlocBuilder<GetBusinessCubit,GetBusinessState>(
               builder: (context, state) {
                 if (state is GetBusinessSuccess ) {
-                  return Expanded(
-                    child: ListView.separated(
-                        scrollDirection: Axis.vertical,
-                        itemBuilder: (context,index)=>articleItem(title: state.articles[index].title!,
+                  return ListView.separated(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context,index)=>articleItem(title: state.articles[index].title!,
+                          image: state.articles[index].urlToImage,
+                          author: state.articles[index].author,
+                          time: state.articles[index].publishedAt,
+                          function: (){
+                        MainLayoutCubit.get(context).insertToDataBase(title:state.articles[index].
+                        title,author: state.articles[index].author,
                             image: state.articles[index].urlToImage,
-                            author: state.articles[index].author,
                             time: state.articles[index].publishedAt,
-                            function: (){
-                          MainLayoutCubit.get(context).insertToDataBase(title:state.articles[index].
-                          title,author: state.articles[index].author,
-                              image: state.articles[index].urlToImage,
-                              time: state.articles[index].publishedAt,
-                              url: state.articles[index].url);
-                            },
-                            url: state.articles[index].url,
-                            context: context)
-                        , separatorBuilder: (context,index)=>const SizedBox(width: 12,), itemCount: state.articles.length),
-                  );
+                            url: state.articles[index].url);
+                          },
+                          url: state.articles[index].url,
+                          context: context)
+                      , separatorBuilder: (context,index)=>const SizedBox(width: 12,), itemCount: state.articles.length);
                 } else if(state is GetBusinessFailure) {
                   return errorWidget(text: state.errMessage,context: context);
                 } else {
