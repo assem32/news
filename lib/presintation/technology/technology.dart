@@ -32,6 +32,7 @@ class TechnologyScreen extends StatelessWidget {
                           author: state.articles[index].author,
                           time: state.articles[index].publishedAt,
                           url:  state.articles[index].url,
+                          showIcon: true,
                           function: (){
                             MainLayoutCubit.get(context).insertToDataBase(title:state.articles[index].title,author: state.articles[index].author,image: state.articles[index].urlToImage,time: state.articles[index].publishedAt,url: state.articles[index].url);
                           },

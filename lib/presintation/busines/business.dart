@@ -30,6 +30,7 @@ class Business extends StatelessWidget {
                           image: state.articles[index].urlToImage,
                           author: state.articles[index].author,
                           time: state.articles[index].publishedAt,
+                          showIcon: true,
                           function: (){
                         MainLayoutCubit.get(context).insertToDataBase(title:state.articles[index].
                         title,author: state.articles[index].author,

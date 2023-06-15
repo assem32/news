@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:news/presintation/main_layout/cubit/cubit.dart';
+import 'package:news/presintation/main_layout/cubit/state.dart';
 import 'package:news/presintation/resources/color_manger.dart';
 import 'package:news/presintation/resources/component.dart';
 import 'package:news/view_models/get_articles_cubit/get_articles_cubit.dart';
@@ -15,19 +17,24 @@ class AllScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('Trending',style: Theme.of(context).textTheme.displayMedium,),
-        BlocBuilder<GetHeadLinesCubit,GetHeadLinesState>(
-          builder: (context, state) {
-            if(state is GetHeadLinesSuccess) {
-              return Container(
-                height: MediaQuery.of(context).size.height*0.29449423815621,
-                width: double.infinity,
-                child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) => Card(
+    return BlocConsumer<MainLayoutCubit,AppState>(
+      listener: (context, state) {
+
+      },
+      builder: (context, state) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Trending',style: Theme.of(context).textTheme.displayMedium,),
+            BlocBuilder<GetHeadLinesCubit,GetHeadLinesState>(
+              builder: (context, state) {
+                if(state is GetHeadLinesSuccess) {
+                  return Container(
+                    height: MediaQuery.of(context).size.height*0.29449423815621,
+                    width: double.infinity,
+                    child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) => Card(
                           // color: Colors.orange,
                           clipBehavior: Clip.antiAliasWithSaveLayer,
                           // margin: EdgeInsets.all(4),
@@ -52,11 +59,11 @@ class AllScreen extends StatelessWidget {
                                       ),
                                       child: Image(
                                         width:
-                                            MediaQuery.of(context).size.width *
-                                                0.7244897959183673,
+                                        MediaQuery.of(context).size.width *
+                                            0.7244897959183673,
                                         height:
-                                            MediaQuery.of(context).size.height *
-                                                0.203393085787452,
+                                        MediaQuery.of(context).size.height *
+                                            0.203393085787452,
                                         fit: BoxFit.fill,
                                         image: NetworkImage(
                                           state.headlines[index].urlToImage==null?'https://cdn-icons-png.flaticon.com/512/102/102407.png?w=740&t=st=1686748029~exp=1686748629~hmac=1db47efe74968a0c38baa278d2b471b7b54ae649babed8a4597723e08b273c08':state.headlines[index].urlToImage!,
@@ -86,7 +93,7 @@ class AllScreen extends StatelessWidget {
                                     child: Text(
                                       state.headlines[index].author==null?'':state.headlines[index].author!,
                                       style:
-                                          Theme.of(context).textTheme.bodyLarge,
+                                      Theme.of(context).textTheme.bodyLarge,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
@@ -96,51 +103,56 @@ class AllScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                    separatorBuilder: (context, index) => const SizedBox(
+                        separatorBuilder: (context, index) => const SizedBox(
                           width: 12,
                         ),
-                    itemCount: 5),
-              );
-            }
-            else if (state is GetHeadLinesFailure){
-              return errorWidget(text: state.errMessage,context: context);
+                        itemCount: 5),
+                  );
+                }
+                else if (state is GetHeadLinesFailure){
+                  return errorWidget(text: state.errMessage,context: context);
 
-            }
-            else {
-              return Center(child: CircularProgressIndicator(color: ColorManger.headLine,));
-            }
-          },
-        ),
-        Padding(
-          padding:  EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height*0.0108040973111396),
-          child: Text('Latest',style: Theme.of(context).textTheme.displayMedium,),
-        ),
-        BlocBuilder<GetArticlesCubit,GetArticlesState>(
-          builder: (context,state){
-            if(state is GetArticlesSuccess) {
-              return  ListView.separated(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context,index)=>articleItem(
-                      title: state.articles[index].title,
-                      image: state.articles[index].urlToImage,
-                      time: state.articles[index].publishedAt,
-                      showIcon: true,
-                      swipe: false,
-                      author: state.articles[index].author,
-                      url: state.articles[index].url,
-                      context: context
-                  )
-                  , separatorBuilder: (context,index)=>const SizedBox(width: 12,), itemCount: state.articles.length);
-            } else if (state is GetArticlesFailure) {
-              return errorWidget(text: state.errMessage,context: context);
-            } else {
-              return Center(child: CircularProgressIndicator(color:  ColorManger.headLine,));
-            }
-          },
-        ),
-      ],
+                }
+                else {
+                  return Center(child: CircularProgressIndicator(color: ColorManger.headLine,));
+                }
+              },
+            ),
+            Padding(
+              padding:  EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height*0.0108040973111396),
+              child: Text('Latest',style: Theme.of(context).textTheme.displayMedium,),
+            ),
+            BlocBuilder<GetArticlesCubit,GetArticlesState>(
+              builder: (context,state){
+                if(state is GetArticlesSuccess) {
+                  return  ListView.separated(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context,index)=>articleItem(
+                          title: state.articles[index].title,
+                          image: state.articles[index].urlToImage,
+                          time: state.articles[index].publishedAt,
+                          showIcon: true,
+                          swipe: false,
+                          function: (){
+                            MainLayoutCubit.get(context).insertToDataBase(title:state.articles[index].title,author: state.articles[index].author,image: state.articles[index].urlToImage,time: state.articles[index].publishedAt,url: state.articles[index].url);
+                          },
+                          author: state.articles[index].author,
+                          url: state.articles[index].url,
+                          context: context
+                      )
+                      , separatorBuilder: (context,index)=>const SizedBox(width: 12,), itemCount: state.articles.length);
+                } else if (state is GetArticlesFailure) {
+                  return errorWidget(text: state.errMessage,context: context);
+                } else {
+                  return Center(child: CircularProgressIndicator(color:  ColorManger.headLine,));
+                }
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
