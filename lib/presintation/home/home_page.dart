@@ -5,6 +5,7 @@ import 'package:news/presintation/all_screen/all_screen.dart';
 import 'package:news/presintation/main_layout/cubit/cubit.dart';
 import 'package:news/presintation/main_layout/cubit/state.dart';
 import 'package:news/presintation/resources/color_manger.dart';
+import 'package:news/presintation/resources/routing_manger.dart';
 import 'package:news/presintation/resources/string_Manger.dart';
 import 'package:news/view_models/search_cubit/search_cubit.dart';
 
@@ -49,20 +50,28 @@ class HomePage extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
                       ),
-                      child: TextFormField(
-                        onChanged: (v){
-
+                      child: InkWell(
+                        onTap:(){
+                          Navigator.pushNamed(context, Routes.searchRoute);
                         },
-                        decoration: InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.search,
-                              color: ColorManger.secColor,
-                            ),
-                            label: Text('Search'),
-                            labelStyle: TextStyle(color: ColorManger.secColor),
-                            filled: true,
-                            fillColor: ColorManger.lightGrey.withOpacity(0.2),
-                            border: InputBorder.none),
+                        child: TextFormField(
+
+                          onChanged: (v){
+
+                          },
+
+                          decoration: InputDecoration(
+                            enabled: false,
+                              prefixIcon: Icon(
+                                Icons.search,
+                                color: ColorManger.secColor,
+                              ),
+                              label: Text('Search'),
+                              labelStyle: TextStyle(color: ColorManger.secColor),
+                              filled: true,
+                              fillColor: ColorManger.lightGrey.withOpacity(0.2),
+                              border: InputBorder.none),
+                        ),
                       ),
                     ),
                   ),

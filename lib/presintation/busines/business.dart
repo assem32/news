@@ -21,7 +21,7 @@ class Business extends StatelessWidget {
           children: [
             BlocBuilder<GetBusinessCubit,GetBusinessState>(
               builder: (context, state) {
-                if (state is GetBusinessSuccess )
+                if (state is GetBusinessSuccess ) {
                   return Expanded(
                     child: ListView.separated(
                         scrollDirection: Axis.vertical,
@@ -30,16 +30,21 @@ class Business extends StatelessWidget {
                             author: state.articles[index].author,
                             time: state.articles[index].publishedAt,
                             function: (){
-                          MainLayoutCubit.get(context).insertToDataBase(title:state.articles[index].title,author: state.articles[index].author,image: state.articles[index].urlToImage,time: state.articles[index].publishedAt,url: state.articles[index].url);
+                          MainLayoutCubit.get(context).insertToDataBase(title:state.articles[index].
+                          title,author: state.articles[index].author,
+                              image: state.articles[index].urlToImage,
+                              time: state.articles[index].publishedAt,
+                              url: state.articles[index].url);
                             },
                             url: state.articles[index].url,
                             context: context)
                         , separatorBuilder: (context,index)=>const SizedBox(width: 12,), itemCount: state.articles.length),
                   );
-                else if(state is GetBusinessFailure)
-                  return Text(state.errMessage);
-                else
-                  return CircularProgressIndicator(color: ColorManger.headLine,);
+                } else if(state is GetBusinessFailure) {
+                  return errorWidget(text: state.errMessage,context: context);
+                } else {
+                  return Center(child: CircularProgressIndicator(color: ColorManger.headLine,));
+                }
               },
             )
           ],

@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news/presintation/resources/assets_manger.dart';
 import 'package:news/presintation/resources/color_manger.dart';
+import 'package:news/presintation/resources/component.dart';
+import 'package:news/presintation/resources/routing_manger.dart';
 import 'package:news/presintation/resources/string_Manger.dart';
+import 'package:news/view_models/explore_cubit/get_explore_cubit.dart';
+import 'package:news/view_models/explore_cubit/get_explore_state.dart';
 
 class ExploreDetails extends StatelessWidget {
-  const ExploreDetails({Key? key}) : super(key: key);
+  final assetImage,title;
+  const ExploreDetails({required this.assetImage,required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +28,11 @@ class ExploreDetails extends StatelessWidget {
 
                 ),
                 child: TextFormField(
-
+                  onTap:(){
+                    Navigator.pushNamed(context, Routes.searchRoute);
+                  },
                   decoration: InputDecoration(
+                    enabled: false,
                       prefixIcon:Icon(Icons.search,color: ColorManger.secColor,),
                       label: Text('Search'),
                       labelStyle: TextStyle(color: ColorManger.secColor),
@@ -40,51 +49,38 @@ class ExploreDetails extends StatelessWidget {
                 Container(
                     width: MediaQuery.of(context).size.width*0.1479591836734694,
                     height: MediaQuery.of(context).size.width*0.1479591836734694,
-                    child: Image.asset('${AssetsManger.aljazzira}')),
-                Text('${StringManger.aljazzera}',style: TextStyle(color: ColorManger.mainColor,fontSize: 12,fontFamily: 'SF Pro Display'),)
+                    child: Image.asset('${assetImage}')),
+                Text('${title}',style: TextStyle(color: ColorManger.mainColor,fontSize: 12,fontFamily: 'SF Pro Display'),)
               ],
             ),
-            Expanded(
-              child: ListView.separated(
-                  scrollDirection: Axis.vertical,
-                  itemBuilder: (context,index)=>Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: InkWell(
-                      child: Row(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Category',style: Theme.of(context).textTheme.bodyLarge,),
-                              Text('News title here',style: Theme.of(context).textTheme.displayMedium,),
-                              Row(
-                                children: [
-                                  Text('time',style: Theme.of(context).textTheme.bodyLarge,),
-                                  IconButton(onPressed: (){}, icon: Icon(Icons.more_horiz))
-                                ],
-                              ),
+            BlocBuilder<GetExploreCubit,GetExploreState>(
+              builder: (context, state) {
+                if (state is GetExploreBBCSuccess){
+                  return Expanded(
+                    child: ListView.separated(
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (context,index)=>articleItem(
+                          title: state.sources[index].name,
+                          url: state.sources[index].url,
+                          author: state.sources[index].category,
+                          swipe: false,
+                          showIcon: false,
+                          assetShow: true,
+                          assets: assetImage,
+                          context: context
+                        )
+                        , separatorBuilder: (context,index)=>const SizedBox(width: 12,), itemCount: state.sources.length),
+                  );
+                }
+                else if (state is GetExploreBBCFailure){
+                  return errorWidget(text: state.errMessage,context: context);
 
-                            ],
-                          ),
-                          Spacer(),
-                          Container(
-
-                              clipBehavior: Clip.antiAliasWithSaveLayer,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16),
-
-                              ),
-                              child: Image(
-                                width: MediaQuery.of(context).size.width*0.2040816326530612,
-                                height: MediaQuery.of(context).size.height*0.1024327784891165,
-                                image: NetworkImage('https://img.freepik.com/free-photo/nature-colorful-landscape-dusk-cloud_1203-5705.jpg?w=1060&t=st=1686670375~exp=1686670975~hmac=e7c38f30b1fc6634512d807e74897e0415050909bab602f9a465d838cbad7edf'),fit: BoxFit.fill,)),
-
-
-                        ],
-                      ),
-                    ),
-                  )
-                  , separatorBuilder: (context,index)=>const SizedBox(width: 12,), itemCount: 5),
+                }
+                else
+                  {
+                    return Center(child: CircularProgressIndicator(color: ColorManger.headLine,));
+                  }
+              },
             )
           ],
         ),

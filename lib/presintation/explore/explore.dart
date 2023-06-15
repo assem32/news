@@ -7,7 +7,8 @@ import 'package:news/presintation/resources/string_Manger.dart';
 
 List newsLogo=[AssetsManger.bbc_news,AssetsManger.aljazzira,AssetsManger.sabq,AssetsManger.abc_news,AssetsManger.argaam,AssetsManger.bloomberg,];
 List newsName=[StringManger.bbcNews,StringManger.aljazzera,StringManger.sabq,StringManger.abcNews,StringManger.argaam,StringManger.bloomberg,];
-
+List newsCode=[StringManger.bbcNewsCode,StringManger.aljazzeraCode,StringManger.sabqCode,StringManger.abcNewsCode,StringManger.argaamCode,StringManger.bloombergCode,];
+List function=[];
 class Explore extends StatelessWidget {
   const Explore({Key? key}) : super(key: key);
 
@@ -27,15 +28,21 @@ class Explore extends StatelessWidget {
                   borderRadius: BorderRadius.circular(50),
 
                 ),
-                child: TextFormField(
+                child: InkWell(
+                  onTap:(){
+                    Navigator.pushNamed(context, Routes.searchRoute);
+                  },
+                  child: TextFormField(
 
-                  decoration: InputDecoration(
-                      prefixIcon:Icon(Icons.search,color: ColorManger.secColor,),
-                      label: Text('Search'),
-                      labelStyle: TextStyle(color: ColorManger.secColor),
-                      filled: true,
-                      fillColor:ColorManger.secColor.withOpacity(0.1),
-                      border: InputBorder.none
+                    decoration: InputDecoration(
+                      enabled: false,
+                        prefixIcon:Icon(Icons.search,color: ColorManger.secColor,),
+                        label: Text('Search'),
+                        labelStyle: TextStyle(color: ColorManger.secColor),
+                        filled: true,
+                        fillColor:ColorManger.secColor.withOpacity(0.1),
+                        border: InputBorder.none
+                    ),
                   ),
                 ),
 
@@ -65,7 +72,8 @@ class Explore extends StatelessWidget {
                         color: ColorManger.mainColor,
                         shape: StadiumBorder(),
                         onPressed: (){
-                          Navigator.pushNamed(context, Routes.exploreDetailsRoute);
+
+                          Navigator.pushNamed(context, Routes.exploreDetailsRoute,arguments: [newsLogo[index],newsName[index],newsCode[index]]);
                         },child: Text('Explore',style: TextStyle(color: Colors.white,fontSize: 10),),)
                     ],
                   ),

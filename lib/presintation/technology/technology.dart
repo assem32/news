@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news/presintation/main_layout/cubit/cubit.dart';
@@ -23,7 +22,7 @@ class TechnologyScreen extends StatelessWidget {
           children: [
             BlocBuilder<GetTechnologyCubit,GetTechnologyState>(
               builder: (context, state) {
-                if (state is GetTechnologySuccess )
+                if (state is GetTechnologySuccess ) {
                   return Expanded(
                     child: ListView.separated(
                         scrollDirection: Axis.vertical,
@@ -38,10 +37,11 @@ class TechnologyScreen extends StatelessWidget {
                             context: context)
                         , separatorBuilder: (context,index)=>const SizedBox(width: 12,), itemCount: state.articles.length),
                   );
-                else if(state is GetTechnologyFailure)
-                  return Text(state.errMessage);
-                else
-                  return CircularProgressIndicator(color: ColorManger.headLine,);
+                } else if(state is GetTechnologyFailure) {
+                  return errorWidget(text: state.errMessage,context: context);
+                } else {
+                  return Center(child: CircularProgressIndicator(color: ColorManger.headLine,));
+                }
               },
             ),
           ],

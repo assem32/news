@@ -4,6 +4,7 @@ import 'package:news/presintation/main_layout/cubit/cubit.dart';
 import 'package:news/presintation/main_layout/cubit/state.dart';
 import 'package:news/presintation/resources/color_manger.dart';
 import 'package:news/presintation/resources/component.dart';
+import 'package:news/presintation/resources/routing_manger.dart';
 import 'package:news/presintation/resources/string_Manger.dart';
 
 class ListScreen extends StatelessWidget {
@@ -27,15 +28,21 @@ class ListScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(50),
 
                     ),
-                    child: TextFormField(
+                    child: InkWell(
+                      onTap:(){
+                        Navigator.pushNamed(context, Routes.searchRoute);
+                      },
+                      child: TextFormField(
 
-                      decoration: InputDecoration(
-                          prefixIcon:Icon(Icons.search,color: ColorManger.secColor,),
-                          label: Text('Search'),
-                          labelStyle: TextStyle(color: ColorManger.secColor),
-                          filled: true,
-                          fillColor:ColorManger.secColor.withOpacity(0.1),
-                          border: InputBorder.none
+                        decoration: InputDecoration(
+                          enabled: false,
+                            prefixIcon:Icon(Icons.search,color: ColorManger.secColor,),
+                            label: Text('Search'),
+                            labelStyle: TextStyle(color: ColorManger.secColor),
+                            filled: true,
+                            fillColor:ColorManger.secColor.withOpacity(0.1),
+                            border: InputBorder.none
+                        ),
                       ),
                     ),
 
@@ -57,6 +64,12 @@ class ListScreen extends StatelessWidget {
                         image:MainLayoutCubit.get(context).savedNews[index]['image'] ,
                         time: MainLayoutCubit.get(context).savedNews[index]['time'],
                         url: MainLayoutCubit.get(context).savedNews[index]['url'],
+                        id: MainLayoutCubit.get(context).savedNews[index]['id'],
+                        showIcon: false,
+                        swipe: true,
+                        swipeFun: (){
+                          MainLayoutCubit.get(context).deleteRow(id: MainLayoutCubit.get(context).savedNews[index]['id'] );
+                        },
                         context: context,
                         function: (){
                           MainLayoutCubit.get(context).deleteRow(id: MainLayoutCubit.get(context).savedNews[index]['id']);

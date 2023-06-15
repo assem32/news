@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:news/presintation/resources/color_manger.dart';
+import 'package:news/presintation/resources/component.dart';
 import 'package:news/view_models/get_articles_cubit/get_articles_cubit.dart';
 import 'package:news/view_models/get_articles_cubit/get_articles_state.dart';
 import 'package:news/view_models/get_headlines_cubit/get_headlines_cubit.dart';
 import 'package:news/view_models/get_headlines_cubit/get_headlines_state.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AllScreen extends StatelessWidget {
   const AllScreen({Key? key}) : super(key: key);
@@ -33,6 +35,12 @@ class AllScreen extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: InkWell(
+                              onTap: ()async{
+                                await launchUrl(
+                                    Uri.parse(state.headlines[index].url!),
+                                    mode: LaunchMode.externalApplication
+                                );
+                              },
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -70,10 +78,17 @@ class AllScreen extends StatelessWidget {
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
-                                  Text(
-                                    state.headlines[index].author==null?'':state.headlines[index].author!,
-                                    style:
-                                        Theme.of(context).textTheme.bodyLarge,
+                                  Container(
+                                    width:
+                                    MediaQuery.of(context).size.width *
+                                        0.7244897959183673,
+                                    child: Text(
+                                      state.headlines[index].author==null?'':state.headlines[index].author!,
+                                      style:
+                                          Theme.of(context).textTheme.bodyLarge,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   )
                                 ],
                               ),
@@ -87,11 +102,12 @@ class AllScreen extends StatelessWidget {
               );
             }
             else if (state is GetHeadLinesFailure){
-              return Text(state.errMessage);
+              return errorWidget(text: state.errMessage,context: context);
 
             }
-            else
-              return CircularProgressIndicator(color: ColorManger.headLine,);
+            else {
+              return Center(child: CircularProgressIndicator(color: ColorManger.headLine,));
+            }
           },
         ),
         Padding(
@@ -100,57 +116,29 @@ class AllScreen extends StatelessWidget {
         ),
         BlocBuilder<GetArticlesCubit,GetArticlesState>(
           builder: (context,state){
-            if(state is GetArticlesSuccess)
+            if(state is GetArticlesSuccess) {
               return  Expanded(
                 flex: 6,
 
                 child: ListView.separated(
                     scrollDirection: Axis.vertical,
-                    itemBuilder: (context,index)=>Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: InkWell(
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(state.articles[index].author==null ?'':state.articles[index].author!,style: Theme.of(context).textTheme.bodyLarge,),
-                                  Text(state.articles[index].title!,style: Theme.of(context).textTheme.displayMedium,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  Row(
-                                    children: [
-                                      Text(DateFormat('dd/MM/yyyy').format(DateTime.parse(state.articles[index].publishedAt!)),style: Theme.of(context).textTheme.bodyLarge,),
-                                      IconButton(onPressed: (){}, icon: Icon(Icons.more_horiz))
-                                    ],
-                                  ),
-
-                                ],
-                              ),
-                            ),
-                            Spacer(),
-                            Container(
-
-                                clipBehavior: Clip.antiAliasWithSaveLayer,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16),
-
-                                ),
-                                child: Image(
-                                  width: MediaQuery.of(context).size.width*0.2040816326530612,
-                                  height: MediaQuery.of(context).size.height*0.1024327784891165,
-                                  image: NetworkImage(state.articles[index].urlToImage==null?"https://cdn-icons-png.flaticon.com/512/102/102407.png?w=740&t=st=1686748029~exp=1686748629~hmac=1db47efe74968a0c38baa278d2b471b7b54ae649babed8a4597723e08b273c08":state.articles[index].urlToImage!),fit: BoxFit.fill,)),
-
-
-                          ],
-                        ),
-                      ),
+                    itemBuilder: (context,index)=>articleItem(
+                        title: state.articles[index].title,
+                        image: state.articles[index].urlToImage,
+                        time: state.articles[index].publishedAt,
+                        showIcon: true,
+                        swipe: false,
+                        author: state.articles[index].author,
+                        url: state.articles[index].url,
+                        context: context
                     )
                     , separatorBuilder: (context,index)=>const SizedBox(width: 12,), itemCount: state.articles.length),
               );
-            else if (state is GetArticlesFailure)
-              return Text(state.errMessage);
-            else
-              return CircularProgressIndicator(color:  ColorManger.headLine,);
+            } else if (state is GetArticlesFailure) {
+              return errorWidget(text: state.errMessage,context: context);
+            } else {
+              return Center(child: CircularProgressIndicator(color:  ColorManger.headLine,));
+            }
           },
         ),
       ],

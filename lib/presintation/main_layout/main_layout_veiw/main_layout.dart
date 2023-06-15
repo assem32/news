@@ -24,7 +24,7 @@ class MainLayout extends StatelessWidget {
                 MainLayoutCubit.get(context).changePage(index);
               },
               currentIndex: MainLayoutCubit.get(context).pageNum,
-              items: [
+              items: const [
                 BottomNavigationBarItem(
                     icon: Icon(Icons.home),
                     label: 'Home'

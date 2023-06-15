@@ -25,7 +25,7 @@ class Profile extends StatelessWidget {
                       color: MainLayoutCubit.get(context).isDark?Colors.white:Colors.black,
                       onPressed: (){
                       MainLayoutCubit.get(context).changeAppMode();
-                    },child: MainLayoutCubit.get(context).isDark?Text('Light mode'):Text('Dark mode',style: TextStyle(color: Colors.white),),),
+                    },child: MainLayoutCubit.get(context).isDark?const Text('Light mode'):const Text('Dark mode',style: TextStyle(color: Colors.white),),),
                   ],
                 )
               ],
